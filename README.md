@@ -1,6 +1,6 @@
 # LaTexTemplate_ActaPhysicaSinica
 
-物理学报（Acta Physica Sinica）的LaTex模板
+## 物理学报（Acta Physica Sinica）的LaTex模板
 
 由于物理学报官网给的LaTex模板是基于CTex书写的并且已经多年未更新，我重写了新的sty文件，使之可以正常使用。
 在TexLive 2022 和 TexLive 2021上测试，可运行无误
@@ -27,7 +27,7 @@
 
 ### 一些方便的小命令
 
- - 段首空两格的“两个空格” (两个 \quad 长度的空白)
+ - 段首空两格的“两个空格” (两个 `\quad` 长度的空白)
     `\indt`  
 
  - 整段缩进 （一个没有项目符号的itemize环境）
