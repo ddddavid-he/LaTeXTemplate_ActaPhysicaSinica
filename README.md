@@ -1,4 +1,4 @@
-# LaTexTemplate_ActaPhysicaSinica
+# LaTex Template for ActaPhysicaSinica (物理学报)
 
 ## 物理学报（Acta Physica Sinica）的LaTex模板
 
