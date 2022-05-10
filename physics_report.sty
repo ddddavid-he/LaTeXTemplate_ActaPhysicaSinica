@@ -1,0 +1,611 @@
+% LaTeX Package for Physics Report 
+% By Ddddavid
+% 2022/5/7
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%           Table of Contents            %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%% notes: 用 <text> <contents>等 表示
+%% 具体的一段内容或文字
+%
+% 
+%% -> 颜色相关 <- %%%%%%%%%%%%%%%%%%
+% @ 预定义的颜色 
+%   [red, blue, yellow, white]
+% 
+% @ 设置字体颜色 
+%   \Red{<文字>} \Blue{..} \Yellow{..} \White{..}
+% 
+% @ 高亮一段文字（黄底白框红字） 
+%   \highlight{<文字>}
+% 
+% 
+%% -> 一些方便的小命令 <- %%%%%%%%%%%%%
+% @ 段首空两格的“两个空格” (两个 \quad 长度的空白)
+%   \indt  
+% 
+% @ 整段缩进 （一个没有项目符号的itemize环境）
+%   \pindt{ <一段文字> }
+% 
+% @ 全微分符号 d 
+%   \D  
+%%  可独立使用  也可用在  数学模式$<>$中
+% 
+% @ 图像占位符 
+%   \hpic[ <caption> ] 
+%%  <caption> 默认值 = HERE'S A PICTURE
+%%  临时替代图像，显示为高亮的 caption 
+%%  如果给定 <caption>，则占位符具有 label = fig:<caption>
+% 
+% @ 化学式 （正体的数学模式）
+%   \chem{ <化学式> }
+%%  可独立使用  也可用在  数学模式
+%%  H20 == \chem{H_2O} == $\chem{H_2O}$
+% 
+% @ 按照行距和磅数设置字体大小
+%%  \setfontsize{ <字号/磅> }[ <行距/倍> ]
+%%  <行距> 默认值 = 1.5
+% 
+% 
+%% -> 标题、作者、摘要、关键词和PACS <- %%%%
+% 
+% @ 标题变量的赋值
+%   \title[ <English Title> ]{ <中文标题> }
+%%  将中英文标题储存，以供\maketitle命令使用
+%%  当 <Englsih Title> 未指定时，英文部分显示为 -NoValue-
+% 
+% @ 作者变量的赋值
+%   \author[ <English Author List> ]{ <作者列表> }
+%%  <content> 中可用 \and 命令分隔作者名，作用为 \quad 
+%%  <content> 中可用 \superscript{ <上标> } 命令产生上标
+%%      David\superscript{ \dagger } 
+%%      <上标> 处于数学模式中
+% 
+% @ 所在单位变量赋值
+%   \institude[ <English Institude List> ]{ <单位列表> } 
+% 
+% @ 创建标题 maketitle 
+%   \maketitle 
+%   第一次使用 \maketitle 时，产生中文标题部分 <中文xxx>；
+%   第二次使用，产生英文标题部分 <English xxx>
+%       标题部分包括 标题、作者、单位 
+% 
+% @ 摘要 
+%   - \abstract[ <英文开关> ]{ <摘要内容> }
+%   - \begin{abstract}[ <英文开关> ]
+%         <摘要内容>
+%     \end{abstract}
+%%  函数式写法 和 环境式写法 效果完全相同
+%%  <英文开关> = [ " english=true ", " english=false ", " english "]
+%%      默认值 = " english=false "
+%%      " english " 等同于 " english=true "
+%%  \abstract{} 产生中文部分， \abstract[english]{} 产生英文部分
+%% 中文摘要 显示“摘要”，英文摘要显示"Abstract"
+% 
+% @ 关键词
+%   \keywords[ <英文开关> ]{ <关键词> }
+%%  <英文开关> 与 \abstract 相同
+%%  \keywords 结束后需要自行换行
+%  
+% @ PACS代码
+%   \pacs 
+%%  需要自行换行
+% 
+% 
+%% -> bib参考文献 <- %%%%%%%%%%%%%%%%%%%%%%
+% 
+% @ 导入bib文件
+%   \bibreference[ <可选控制参数> ]{ <bib文件名> }
+%%  导入的bib文件自动按 GB-T 7714 格式排版 
+%%  <可选控制参数> 包含
+%%      nocite 导入bib中所有文献 或 只导入前文使用过的文献
+%%          导入全部 " nocite=true " or " nocite " ； 
+%%          使用过的 " nocite=false "；
+%%          默认值 true 导入全部
+%%      newpage 在新一页放置参考文献 或 在当前位置开始文献
+%%          新一页 " newpage=true " or " newpage "；
+%%          当前位置 " newpage=false "；
+%%          默认值 false 当前位置；
+%%      style 参考文献排序方式 [引用顺序, 作者名-年份]
+%%          引用顺序 " style=numerical "；
+%%              有数字序号，按照引用顺序和bib中顺序排序
+%%          作者名-年份 " style=author-year "；  
+%%              无序号，按照作者名字和年份联合排序
+%%          默认值 numerical 按引用顺序排序  
+%  
+% 
+%% -> 导入的包 <- %%%%%%%%%%%%%%%%%%%%%%%%
+% 
+% @ 双语标题 from package  bicaption
+%   \bicaption{ <caption 1> }{ <caption 2> }
+% 
+% @ 版面设置 from package geometry
+%   \geometry{ <key-val specifier> } 
+% 
+% @ 多栏排版
+%   \setlength\columnsep{<栏间距>}
+%   \begin{multicols}{<栏数目>}
+%       <contents>  
+%   \end{multicols}  
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+
+
+
+\NeedsTeXFormat{LaTeX2e} % 最低版本要求
+\ProvidesPackage{physics_report} % 包名
+\ExplSyntaxOn
+\makeatletter
+
+\RequirePackage{expl3, xkeyval, xparse}
+\RequirePackage{amsmath, amssymb, mathtools}
+\RequirePackage{tabularx, longtable, tabularray}
+\RequirePackage{verbatim, color, multirow, multicol}
+\RequirePackage{graphicx, subfigure, caption, bicaption}
+\RequirePackage{float, booktabs, wrapfig, siunitx}
+\RequirePackage{fancyhdr}
+
+\RequirePackage[sort&compress]{gbt7714}
+
+\RequirePackage{geometry}
+
+% tabularray 导入amsmath,booktabs和siunitx
+\UseTblrLibrary{amsmath} % +bmatrix +pmatrix 环境
+\UseTblrLibrary{booktabs} % \toprule \midrule \bottomrule 
+\UseTblrLibrary{siunitx} % \qty \si \SI \num
+
+
+
+% 页面版式参数设置 -->
+% \keys_define:nn { pr_page/geometry } {
+%     left    .value_required:n = true
+%     left    .default:n        = 2cm
+%     left    .code:n           = \geometry{left=#1} 
+%     left    .usage:n          = preamble 
+
+%     right   .value_required:n = true
+%     right   .default:n        = 2cm
+%     right   .code:n           = \geometry{right=#1} 
+%     right   .usage:n          = preamble 
+
+%     top     .value_required:n = true
+%     top     .default:n        = 2cm
+%     top     .code:n           = \geometry{top=#1} 
+%     top     .usage:n          = preamble 
+
+%     bottom  .value_required:n = true
+%     bottom  .default:n        = 2cm
+%     bottom  .code:n           = \geometry{bottom=#1} 
+%     bottom  .usage:n          = preamble 
+% }
+% \keys_define:nn { pr_page } {
+%     pagestyle   .value_required:n = true
+%     pagestyle   .default:n        = plain
+%     pagestyle   .code:n           = \pagestyle{#1}
+
+%     linespread  .value_required:n = true
+%     linespread  .default:n        = 1.5
+%     linespread  .code:n           = \linespread{#1}
+%     hangju      .value_required:n = true
+%     hangju      .default:n        = 1.5
+%     hangju      .code:n           = \linespread{#1}
+
+%     % colsep      .value_required
+% }
+% \DeclareDocumentCommand \PhysicsReportSetup {m} {
+%     \keys_set:nn { pr_page } { #1 }
+% }
+\geometry{
+    a4paper,
+    left=2cm,
+    right=2cm,
+    top=2cm,
+    bottom=2cm
+}
+
+\pagestyle{plain} % 页码位置
+\linespread{1.5} % 1.5 倍行距
+\DeclareDocumentCommand \hangju { m }{
+    \linespread{#1}
+} % 行距的另一个命令
+\setlength\columnsep{2em}
+% <--
+
+
+
+% CTeX Section标题样式设置 -->
+\ctexset{
+    section = {
+        format += \zihao{4} \heiti \raggedright,
+        % name = {,\hspace{1em}},
+        number = \arabic{section},
+        beforeskip = 1.0ex plus 0.2ex minus .2ex,
+        afterskip = 1.0ex plus 0.2ex minus .2ex,
+        aftername = \hspace{1em}
+    },
+    subsection = {
+        format = \zihao{-4} \songti \raggedright,
+        % name = {,\hspace{.5em}},
+        number = {\arabic{section}.\arabic{subsection}},
+        beforeskip = 1.0ex plus 0.2ex minus .2ex,
+        afterskip = 1.0ex plus 0.2ex minus .2ex,
+        aftername = \hspace{1em}
+    },
+    subsubsection = {
+        format = \zihao{-4} \songti \raggedright,
+        % name = {,\hspace{.5em}},
+        number = {\arabic{section}.\arabic{subsection}.\arabic{subsubsection}},
+        beforeskip = 1.0ex plus 0.2ex minus .2ex,
+        afterskip = 1.0ex plus 0.2ex minus .2ex,
+        aftername = \hspace{1em}
+    }
+}
+% <--
+
+
+
+% 双语标题设置 -->
+% \DeclareBiCaptionSeparator{BI}{⟨code⟩}
+\captionsetup[figure]{labelsep=quad}
+\captionsetup[table]{labelsep=quad}
+\captionsetup[figure][bi-second]{name=Fig.,labelsep=quad} %设置图的英文编号前缀
+\captionsetup[table][bi-second]{name=Tab.,labelsep=quad} %设置表的英文编号前缀
+% <--
+
+
+
+% 定义颜色 和 简单设置文字颜色的命令 -->
+\definecolor{red}{rgb}{1,0,0}
+\definecolor{blue}{rgb}{0,0.7,0.85}
+\definecolor{yellow}{rgb}{0.95,0.95,0.5}
+\definecolor{white}{rgb}{1,1,1}
+
+\newcommand{\Red}[1]{\textcolor{red}{#1}}
+\newcommand{\Blue}[1]{\textcolor{blue}{#1}}
+\newcommand{\Yellow}[1]{\textcolor{yellow}{#1}}
+\newcommand{\White}[1]{\textcolor{white}{#1}}
+\DeclareDocumentCommand \highlight { m } {
+    \fcolorbox{white}{yellow}{
+        \textcolor{red}{\textbf{#1}}
+    }
+}
+% <--
+
+
+
+% 开头空格
+\newcommand{\indt}{\mbox{\quad\quad}}
+
+
+% 整段缩进
+\DeclareDocumentCommand \pindt { m } {
+    \begin{itemize}\setlength{\itemsep}{-1pt}
+        \item[] #1
+    \end{itemize}
+}
+
+
+
+% 全微分符号
+\DeclareDocumentCommand \D {} {
+    \ifmmode
+        {\rm d}
+    \else
+        ${\rm d}$
+    \fi
+}
+
+
+
+% 图像占位
+%% 生成一个高亮标题 label=caption 的图像占位符
+\DeclareDocumentCommand \hpic { o } {
+    \IfNoValueT{#1}{
+        \tl_set:Nn \l__hpicTitle_tl {
+            HERE'S A PICTURE
+        }
+    }
+    \begin{figure}[H]
+        \centering
+        \caption{
+            \fcolorbox{white}{yellow}{\textcolor{red}{\textbf{
+                \tl_use:N \l__hpicTitle_tl
+            }}}
+        }
+        \IfValueT{#1}{
+            \label{fig:#1}
+        }
+    \end{figure}
+}
+
+
+
+% 化学式
+%% \chem{H_2O}
+%% \chem{{}^{235}U}
+\DeclareDocumentCommand \chem { m } {
+    \ifmmode
+        {\rm #1}
+    \else
+        {$\rm #1$}
+    \fi
+}
+
+
+
+% 字号设置 -->
+%% \setfontsize{<字号/磅>}[行间距/倍 default=1.5]
+\DeclareDocumentCommand \setfontsize { m O{1.5} } {
+    \fontsize{#1}{
+        \fp_eval:n { #2 * #1 }
+    }
+    \selectfont
+}
+
+
+
+% 摘要和关键词 -->
+%% 定义一些key方便设置语言 ->
+\define@boolkey+[pr]{abstract}{english}[true]{}{
+    \PackageWarning{physics_report}{Option of nocite using default=true.}
+}
+\define@boolkey+[pr]{keywords}{english}[true]{}{
+    \PackageWarning{physics_report}{Option of nocite using default=true.}
+}
+%% <-
+
+% 摘要 英文使用\abstract[english]{}
+\DeclareDocumentCommand \abstract { O{english=false} m } {
+    \setkeys*[pr]{abstract}{#1}
+    \ifpr@abstract@english
+        \tl_set:Nn \l__abstract_title_tl {
+            \textbf{Abstract}
+        }
+        \tl_set:Nn \l__abstract_font_tl {
+            \rmfamily\zihao{4}
+        }
+        \tl_set:Nn \l__abstract_content_tl {
+            #2
+        }
+    \else
+        \tl_set:Nn \l__abstract_title_tl {
+            \textbf{摘\quad 要}
+        }
+        \tl_set:Nn \l__abstract_font_tl {
+            \songti\zihao{-4}
+        }
+        \tl_set:Nn \l__abstract_content_tl {
+            #2
+        }
+    \fi
+    
+    \par{
+        \tl_use:N \l__abstract_font_tl
+        \begin{center}
+            \tl_use:N \l__abstract_title_tl
+        \end{center}
+        \tl_use:N \l__abstract_content_tl
+    }
+    \vspace{.5em}
+}
+%% 另外定义abstract环境
+%%% \begin{abstract}[english] <contents> \end{abstract}
+%%% 功能同\abstract[english]{<contents>}
+\DeclareDocumentEnvironment{abstract} { O{english=false} } 
+    {
+        \setkeys*[pr]{abstract}{#1}
+        \ifpr@abstract@english
+            \tl_set:Nn \l__abstract_title_tl {
+                \textbf{Abstract}
+            }
+            \tl_set:Nn \l__abstract_font_tl {
+                \rmfamily\zihao{4}
+            }
+        \else
+            \tl_set:Nn \l__abstract_title_tl {
+                \textbf{摘\quad 要}
+            }
+            \tl_set:Nn \l__abstract_font_tl {
+                \songti\zihao{-4}
+            }
+        \fi
+
+        \par
+        \tl_use:N \l__abstract_font_tl
+        \begin{center}
+            \tl_use:N \l__abstract_title_tl
+        \end{center}
+    } {
+        \vspace{.5em}
+}
+% <-- 
+
+
+% 关键词 
+%% 英文使用\keywords[english]{}或\keywords[english=true]{}
+\DeclareDocumentCommand \keywords { O{english=false} m } {
+    \setkeys*[pr]{keywords}{#1}
+    \ifpr@keywords@english
+        \tl_set:Nn \l__keywords_title_tl {Keywords:\ }
+        \tl_set:Nn \l__keywords_font_tl {\rmfamily\zihao{4}}
+    \else
+        \tl_set:Nn \l__keywords_title_tl {关键词：}
+        \tl_set:Nn \l__keywords_font_tl {\songti\zihao{-4}}
+    \fi
+    \par\noindent{
+        \tl_use:N \l__keywords_font_tl
+        \textbf{ \tl_use:N \l__keywords_title_tl }
+        \zihao{-4}#2
+    }
+}
+% <--
+
+
+
+% PACS
+\DeclareDocumentCommand \pacs { m } {
+    \par\noindent{
+        \zihao{-4}\textbf{PACS：}#1
+    }
+}
+
+
+
+% 标题 和 作者变量 以及创建标题命令 -->
+% 标题变量赋值
+%% \title[<英文标题>]{<中文标题>}
+\DeclareDocumentCommand \title { o m }{
+    \def\pr@thetitle{
+        \begin{center}
+            {\heiti\zihao{3}#2}
+        \end{center} 
+    }
+    \def\pr@theothertitle{
+        \begin{center}
+            {\heiti\fontsize{17}{25.5}\selectfont#1}
+        \end{center}
+    }
+}
+% 作者变量赋值
+%% \author[<英文>]{<中文>}
+\DeclareDocumentCommand \author { o m } {
+    \def\and{{\quad}}
+    \def\pr@theauthor{
+        \begin{center}
+            {\fangsong\zihao{4}#2}
+        \end{center}
+    }
+    \def\pr@theotherauthor{
+        \begin{center}
+            {\rmfamily\zihao{5}#1}
+        \end{center}
+    }
+}
+% 单位变量赋值
+%% \institude[<英文>]{<中文>}
+\DeclareDocumentCommand \institude { o m } { 
+    \def\pr@theinstitude{
+        \begin{center}
+            {\songti\zihao{-4}#2}
+        \end{center}
+    }
+    \def\pr@theotherinstitude{
+            \begin{center}
+                {\rmfamily\fontsize{10}{15}\selectfont#1}
+            \end{center}
+    }
+}
+% 上标序号  自带数学模式
+\DeclareDocumentCommand \superscript { m } {
+    {${}^{#1}$}
+}
+% 创建标题 
+%% 第一次使用为中文 第二次使用为英文 再使用产生warning
+\flag_new:n {title_count_flag}
+\DeclareDocumentCommand \maketitle {} {
+    \int_case:nnF { \flag_height:n {title_count_flag} } {
+        { 0 }{
+                \mbox{}
+                \pr@thetitle
+                \vspace{-1.5em}
+                \pr@theauthor
+                \vspace{-2em}
+                \pr@theinstitude
+        }
+        { 1 }{  
+                \mbox{}
+                \pr@theothertitle
+                \vspace{-1.5em}
+                \pr@theotherauthor
+                \vspace{-2em}
+                \pr@theotherinstitude 
+        }
+    }{ 
+        \PackageWarning{physics_report}{Already~made~2~titles.}
+    }
+    \flag_raise:n {title_count_flag}
+}
+% <--
+
+
+
+% 参考文献 -->
+%% \bibreference[key=value]{bibfile.bib}
+%%% style = [numerical, author-year] default=numerical
+\define@choicekey*+[pr]{reference}{style}[\val\pr@sty]{
+        numerical, author-year
+}{
+    \ifcase\pr@sty\relax
+        \tl_set:Nn \l__bibstyle_tl {
+            gbt7714-numerical
+        }
+    \or 
+        \tl_set:Nn \l__bibstyle_tl {
+            gbt7714-author-year
+        }
+    \fi
+}{
+    \PackageWarning{physics_report}{Option of style is not allowed. Set to default=numerical instead.}
+    \bibliographystyle{gbt7714-numerical}
+}
+%%% nocite = [true, false] default=true
+\define@boolkey+[pr]{reference}{nocite}[true]{}{
+    \PackageWarning{physics_report}{Option of nocite using default=true.}
+}
+%%% does reference locate in a newpage or not
+%%% newpage = [true, false] default=false
+\define@boolkey+[pr]{reference}{newpage}[true]{}{
+    \PackageWarning{physics_report}{Option of newpage using default=false.}
+}
+
+\DeclareDocumentCommand \bibreference { o m } {
+    \setkeys*[pr]{reference}{nocite=true}
+    \setkeys*[pr]{reference}{newpage=false}
+    \setkeys*[pr]{reference}{style=numerical}
+    \IfValueT{#1}{
+        \setkeys*[pr]{reference}{#1}
+    }
+    \ifpr@reference@nocite
+        \nocite{*}
+    \fi 
+    \ifpr@reference@newpage
+        \newpage
+    \fi
+    \bibliographystyle{
+        \tl_use:N \l__bibstyle_tl
+    }
+    \bibliography{#2}
+}
+% <--
+
+
+
+% 新tabu环境 可自动分配宽度
+%% \begin{tabu}{<width>}{<colspec>}
+%%      <contents>
+%% \end{tabu}   
+\newenvironment{tabu}[2]
+{
+    \begin{tblr}{
+        width = #1,
+        colspec = {#2}
+    }
+}
+{
+    \end{tblr}
+}
+% <--
+
+
+
+
+\makeatother
+\ExplSyntaxOff
+\endinput

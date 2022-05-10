@@ -1,0 +1,93 @@
+\documentclass{ctexart}
+\usepackage{physics_report}
+\usepackage{zhlipsum, lipsum}
+
+
+\title[
+    Another Title of Nonsense
+]{
+    一个瞎写的标题
+}
+\author[
+    David He\superscript{1)\dagger} \and Jackman He\superscript{1)}
+]{
+    何大维\superscript{1)\dagger} \quad 何汉杰\superscript{1)}
+}
+\institude[
+    1) School of Physics, Dual-Duck Mountain University, Guangzhou China
+]{
+    1)双鸭山大学 物理学院，广州 
+}
+
+
+
+
+\begin{document}
+    
+
+    \maketitle
+    \abstract{
+        \zhlipsum[2]
+    }
+    \keywords{中微子振荡，我家的茄子，风扇的转子}
+    \pacs{42.81.Wg， 42.82.Et，01.50.Qb，01.55.+b}
+
+\begin{multicols}{2}
+    
+    \section{第一节}
+
+
+    \subsection{第2部分}
+    \zhlipsum[1]
+
+    \subsubsection{第（3）点}
+    \zhlipsum[2]
+
+    一个没标题的图像占位符
+    \hpic
+
+    \zhlipsum[3]
+    一些文字 \highlight{高亮的一些文字} 还有另外一些文字
+
+    再来一个有标题的图像占位符 图\ref{fig:标题}
+    \hpic[标题]
+
+    \begin{table}[H]
+    \centering
+    \begin{tabu}{\linewidth}{
+        |X[1,c]|X[2,c]|X[3,c]|
+    }
+        \toprule
+        A & B & C \\
+        \midrule
+        1 & \SetCell[c=2]{c,m} 2\&3 \\
+        \midrule
+        \romannumeral1 & 
+        \romannumeral2 & 
+        \romannumeral3 \\
+        \bottomrule
+    \end{tabu}
+    \bicaption[tab:thetable]{标题}{caption}
+    \end{table}
+
+\end{multicols}
+
+\newpage
+
+    \maketitle
+    \abstract[english]{
+        \lipsum[1]
+    }
+    \keywords[english]{
+        neutrino, spinner, eggplant 
+    }
+
+
+    % \bibliography{bibtest}
+    \bibreference[
+        nocite, style=numerical, newpage
+    ]{bibfile}
+    
+
+\end{document}
+
