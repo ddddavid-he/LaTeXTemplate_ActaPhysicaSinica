@@ -1,9 +1,9 @@
-# LaTex Template for ActaPhysicaSinica (物理学报)
+# LaTeX Template for ActaPhysicaSinica (物理学报)
 
-## 物理学报（Acta Physica Sinica）的LaTex模板
+## 物理学报（Acta Physica Sinica）的LaTeX模板
 
-由于物理学报官网给的LaTex模板是基于CTex书写的并且已经多年未更新，我重写了新的sty文件，使之可以正常使用。
-在TexLive 2022 和 TexLive 2021上测试，可运行无误
+由于物理学报官网给的LaTeX模板是基于CTeX书写的并且已经多年未更新，我重写了新的sty文件，使之可以正常使用。
+在TeX Live 2022 和 TeX Live 2021上测试，可运行无误
 
 
 文档和说明：
@@ -154,7 +154,7 @@
 
 
 
-### 导入的包 
+### 导入的一些包 
 
  - 双语标题 from package  `bicaption`
 
