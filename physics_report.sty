@@ -307,9 +307,13 @@
 % 图像占位
 %% 生成一个高亮标题 label=caption 的图像占位符
 \DeclareDocumentCommand \hpic { o } {
-    \IfNoValueT{#1}{
+    \IfNoValueTF{#1}{
         \tl_set:Nn \l__hpicTitle_tl {
             HERE'S A PICTURE
+        }
+    }{
+        \tl_set:Nn \l__hpicTitle_tl{
+            #1
         }
     }
     \begin{figure}[H]
