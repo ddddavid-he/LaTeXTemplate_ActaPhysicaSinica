@@ -366,7 +366,7 @@
 %% <-
 
 % 摘要 英文使用\abstract[english]{}
-\DeclareDocumentCommand \abstract { O{english=false} m } {
+\DeclareDocumentCommand \abstract { O{english=false} +m } {
     \setkeys*[pr]{abstract}{#1}
     \ifpr@abstract@english
         \tl_set:Nn \l__abstract_title_tl {
