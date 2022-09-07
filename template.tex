@@ -4,19 +4,27 @@
 
 
 \title[
-    Another Title of Nonsense
+    English Title\superscript{*}
 ]{
-    一个瞎写的标题
+    中文标题\superscript{*}（简短明确,基金资助有上标*）
 }
 \author[
-    David He\superscript{1)\dagger} \and Jackman He\superscript{1)}
+    David He\superscript{1)\dagger} \and Jackman He\superscript{2)} \and Cooper Guo\superscript{3)} \and John He\superscript{4)} \and Orange Guo\superscript{3)}
 ]{
-    何大维\superscript{1)\dagger} \quad 何汉杰\superscript{1)}
+    大维\superscript{1)\dagger} \and 杰汉\superscript{2)} \and 橙子\superscript{3)} \and 君君\superscript{1)} \and 橘子\superscript{3)}
 }
 \institude[
     1) School of Physics, Dual-Duck Mountain University, Guangzhou China
+
+    2) School of Physics, Liberal Arts College of Zhongguan Village, Beijing China
+
+    3) School of Physics, Nanqi Technical School, Hefei China
 ]{
-    1)双鸭山大学 物理学院，广州 
+    1)双鸭山大学\ 物理学院，广州 
+
+    2)中关村文理学院\ 物理学院，北京
+
+    3)南七技校\ 物理学院，合肥
 }
 
 
@@ -27,10 +35,17 @@
 
     \maketitle
     \abstract{
-        \zhlipsum[2]
+        中文摘要部分．\Blue{[300—400字，摘要中不用缩略词，不用第一人称.中英文摘要的结构建议包括：（1）研究背景和目的；（2）方法；（3）主要结果；（4）结论.简明扼要不分段，突出结论、成果]}
     }
-    \keywords{中微子振荡，我家的茄子，风扇的转子}
+    \keywords{宇生中微子，我家的茄子，风扇的转子，一只蛋}
+
+    \vspace{1em}
     \pacs{42.81.Wg， 42.82.Et，01.50.Qb，01.55.+b}
+    \fund{国家重点基础研究发展计划（批准号：2011CB00000）、国家自然科学基金(批准号：50875132，60573172)和国家高技术研究发展计划（批准号：2011AA06Z228）资助的课题．}
+
+    \vspace{1em}
+    \email{ddddavid@physics.org}
+    \email[第一作者]{ddddavid@physics.org}
 
 \begin{multicols}{2}
     
@@ -41,7 +56,6 @@
     \zhlipsum[1]
 
     \subsubsection{第（3）点}
-    \zhlipsum[2]
 
     一个没标题的图像占位符
     \hpic
@@ -51,24 +65,40 @@
 
     再来一个有标题的图像占位符 图\ref{fig:标题}
     \hpic[标题]
-
+    我喜欢初冬的太阳，我喜欢仲夏的月亮。
     \begin{table}[H]
     \centering
     \begin{tabu}{\linewidth}{
-        |X[1,c]|X[2,c]|X[3,c]|
+        X[1,c] X[2,c] X[3,c] 
     }
         \toprule
         A & B & C \\
-        \midrule
+        \cline{2-3}
         1 & \SetCell[c=2]{c,m} 2\&3 \\
         \midrule
-        \romannumeral1 & 
-        \romannumeral2 & 
-        \romannumeral3 \\
+        \romannumeral1 & \romannumeral2 & \romannumeral3 \\
+        piggy & eggy & honey \\
+        \SetCell{bg=red, fg=white} red &
+        \SetCell{bg=yellow, cmd=\fbox} yellow &
+        \SetCell{bg=blue} blue \\
         \bottomrule
     \end{tabu}
     \bicaption[tab:thetable]{标题}{caption}
     \end{table}
+
+
+
+    \section{结论}
+    
+    \Blue{（在研究结果与讨论的基础上总结出本研究得到的重要论点，建议可包括以下内容：（1）解释结果；（2）将结果与之前提出的研究目的或假设相联系，阐明结果的重要性；（3）将结果与其他已有研究工作进行比较；（4）尽可能得出一个很清晰的结论.对每一个结论需要总结证据。同时也可以指出本工作的不足和将要开展工作的展望。请注意不能简单重复摘要和引言.）}
+
+    \acknowledgment{感谢北京大学尤教授和清华大学陈教授的讨论。}
+
+
+    \appendix[newpage=false]
+
+    标题排列和编号方式为附录A，附录B，附录C,每个附录里如果有表，则相应为表A1,A2，表B1,B2，表C1,C2。
+
 
 \end{multicols}
 
@@ -76,11 +106,13 @@
 
     \maketitle
     \abstract[english]{
-        \lipsum[1]
+        To determine the probe made of amino acids arranged in a linear chain and joined together by peptide bonds between the carboxyl and amino groups of adjacent amino acid residues. The sequence of amino acids in a protein is defined by a gene and encoded in the genetic code. This can happen either before the protein is used in the cell, or as part of control mechanisms. 
     }
     \keywords[english]{
-        neutrino, spinner, eggplant 
+        neutrino, spinner, eggplant, egg
     }
+    \fund[english=true]{Project supported by the State Key Development Program for Basic Research of China (Grant No. 2011CB00000), the National Natural Science Foundation of China (Grant Nos. 50875132，60573172 ), and the National High Technology Research and Development Program of China ( Grant No.2011AA06Z228 ) .}
+
 
 
     % \bibliography{bibtest}

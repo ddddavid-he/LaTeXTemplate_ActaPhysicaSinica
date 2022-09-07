@@ -65,6 +65,7 @@
 % 
 % @ 所在单位变量赋值
 %   \institude[ <English Institude List> ]{ <单位列表> } 
+%%  内容中换行规则进行法进行
 % 
 % @ 创建标题 maketitle 
 %   \maketitle 
@@ -93,6 +94,20 @@
 %   \pacs 
 %%  需要自行换行
 % 
+% @ 基金
+%   \fund[ <英文开关> ]{ <基金内容> }
+%%  <英文开关> 与 \abstract 相同
+% 
+% @ 邮箱
+%   \email[ <作者类型> ]{ <邮箱地址> }
+%%   <作者类型> 即： 通讯作者、第一作者、第二作者 ......
+%%   <作者类型> 省略时默认为通讯作者，通讯作者前有 \dagger 符号 
+% 
+% @ 致谢
+%   \acknowledgement{ <内容> }
+%
+% @ 附录
+%   \appendix[ <英文开关> ]
 % 
 %% -> bib参考文献 <- %%%%%%%%%%%%%%%%%%%%%%
 % 
@@ -263,7 +278,7 @@
 
 % 定义颜色 和 简单设置文字颜色的命令 -->
 \definecolor{red}{rgb}{1,0,0}
-\definecolor{blue}{rgb}{0,0.7,0.85}
+\definecolor{blue}{rgb}{0.3,0.7,0.9}
 \definecolor{yellow}{rgb}{0.95,0.95,0.5}
 \definecolor{white}{rgb}{1,1,1}
 
@@ -354,14 +369,95 @@
 }
 
 
+% 标题 和 作者变量 以及创建标题命令 -->
+% 标题变量赋值
+%% \title[<英文标题>]{<中文标题>}
+\DeclareDocumentCommand \title { o m }{
+    \def\pr@thetitle{
+        \begin{center}
+            {\heiti\zihao{3}#2}
+        \end{center} 
+    }
+    \def\pr@theothertitle{
+        \begin{center}
+            {\heiti\fontsize{17}{25.5}\selectfont#1}
+        \end{center}
+    }
+}
+% 作者变量赋值
+%% \author[<英文>]{<中文>}
+\DeclareDocumentCommand \author { +o +m } {
+    \def\and{{\quad}}
+    \def\pr@theauthor{
+        \begin{center}
+            {\fangsong\zihao{4}#2}
+        \end{center}
+    }
+    \def\pr@theotherauthor{
+        \begin{center}
+            {\rmfamily\zihao{5}#1}
+        \end{center}
+    }
+}
+% 单位变量赋值
+%% \institude[<英文>]{<中文>}
+\DeclareDocumentCommand \institude { +o +m } { 
+    \def\pr@theinstitude{
+        \begin{center}
+            {\songti\zihao{-4}#2}
+        \end{center}
+    }
+    \def\pr@theotherinstitude{
+            \begin{center}
+                {\rmfamily\fontsize{10}{15}\selectfont#1}
+            \end{center}
+    }
+}
+% 上标序号  自带数学模式
+\DeclareDocumentCommand \superscript { m } {
+    {${}^{#1}$}
+}
+% 创建标题 
+%% 第一次使用为中文 第二次使用为英文 再使用产生warning
+\flag_new:n {title_count_flag}
+\DeclareDocumentCommand \maketitle {} {
+    \int_case:nnF { \flag_height:n {title_count_flag} } {
+        { 0 }{
+                \mbox{}
+                \pr@thetitle
+                \vspace{-1.5em}
+                \pr@theauthor
+                \vspace{-2em}
+                \pr@theinstitude
+        }
+        { 1 }{  
+                \mbox{}
+                \pr@theothertitle
+                \vspace{-1.5em}
+                \pr@theotherauthor
+                \vspace{-2em}
+                \pr@theotherinstitude 
+        }
+    }{ 
+        \PackageWarning{physics_report}{Already~made~2~titles.}
+    }
+    \flag_raise:n {title_count_flag}
+}
+% <--
+
+
+
 
 % 摘要和关键词 -->
 %% 定义一些key方便设置语言 ->
 \define@boolkey+[pr]{abstract}{english}[true]{}{
-    \PackageWarning{physics_report}{Option of nocite using default=true.}
+    \PackageWarning{physics_report}{Option of Abstract using default=true.}
 }
 \define@boolkey+[pr]{keywords}{english}[true]{}{
-    \PackageWarning{physics_report}{Option of nocite using default=true.}
+    \PackageWarning{physics_report}{Option of Keywords using default=true.}
+}
+\define@boolkey+[pr]{fund}{english}[true]{}{
+    \PackageWarning{physics_report}{Option of Fund using default=true.}
 }
 %% <-
 
@@ -446,7 +542,7 @@
     \par\noindent{
         \tl_use:N \l__keywords_font_tl
         \textbf{ \tl_use:N \l__keywords_title_tl }
-        \zihao{-4}#2
+        \zihao{-4} #2
     }
 }
 % <--
@@ -462,81 +558,47 @@
 
 
 
-% 标题 和 作者变量 以及创建标题命令 -->
-% 标题变量赋值
-%% \title[<英文标题>]{<中文标题>}
-\DeclareDocumentCommand \title { o m }{
-    \def\pr@thetitle{
-        \begin{center}
-            {\heiti\zihao{3}#2}
-        \end{center} 
-    }
-    \def\pr@theothertitle{
-        \begin{center}
-            {\heiti\fontsize{17}{25.5}\selectfont#1}
-        \end{center}
-    }
-}
-% 作者变量赋值
-%% \author[<英文>]{<中文>}
-\DeclareDocumentCommand \author { o m } {
-    \def\and{{\quad}}
-    \def\pr@theauthor{
-        \begin{center}
-            {\fangsong\zihao{4}#2}
-        \end{center}
-    }
-    \def\pr@theotherauthor{
-        \begin{center}
-            {\rmfamily\zihao{5}#1}
-        \end{center}
+% 基金
+\DeclareDocumentCommand \fund { O{english=false} +m } {
+    \setkeys*[pr]{fund}{#1}
+    \ifpr@fund@english
+        \tl_set:Nn \l__fund_title_tl {*\ }
+        \tl_set:Nn \l__fund_font_tl {\rmfamily\zihao{5}}
+    \else
+        \tl_set:Nn \l__fund_title_tl {\textbf{基金：}}
+        \tl_set:Nn \l__fund_font_tl {\songti\zihao{5}}
+    \fi
+    \par\noindent{
+        \tl_use:N \l__fund_font_tl 
+        \tl_use:N \l__fund_title_tl
+        #2
     }
 }
-% 单位变量赋值
-%% \institude[<英文>]{<中文>}
-\DeclareDocumentCommand \institude { o m } { 
-    \def\pr@theinstitude{
-        \begin{center}
-            {\songti\zihao{-4}#2}
-        \end{center}
-    }
-    \def\pr@theotherinstitude{
-            \begin{center}
-                {\rmfamily\fontsize{10}{15}\selectfont#1}
-            \end{center}
-    }
-}
-% 上标序号  自带数学模式
-\DeclareDocumentCommand \superscript { m } {
-    {${}^{#1}$}
-}
-% 创建标题 
-%% 第一次使用为中文 第二次使用为英文 再使用产生warning
-\flag_new:n {title_count_flag}
-\DeclareDocumentCommand \maketitle {} {
-    \int_case:nnF { \flag_height:n {title_count_flag} } {
-        { 0 }{
-                \mbox{}
-                \pr@thetitle
-                \vspace{-1.5em}
-                \pr@theauthor
-                \vspace{-2em}
-                \pr@theinstitude
+
+
+% 邮箱
+%% \email{xxx} 默认为通讯作者邮箱（带\dagger符号）等同于\email[通讯作者]{xxx} 
+%% \email[yyy]{xxx@zzz} 生成： yyy：xxx@zzz
+%% etc. \email[第一作者]{master@article.org} ->  第一作者：master@article.org
+\DeclareDocumentCommand \email { O{通讯作者} m } {
+    \tl_set:Nn \l__option { #1 }
+    \tl_if_eq:NnTF \l__option {通讯作者} {
+        \tl_set:Nn \l__author_type {
+            \makebox[1em]{\large$\dagger$} 
+            \tl_use:N \l__option
+        } 
+    } {
+        \tl_set:Nn \l__author_type {
+            \makebox[1em]{\hspace{1ex}}
+            \tl_use:N \l__option
         }
-        { 1 }{  
-                \mbox{}
-                \pr@theothertitle
-                \vspace{-1.5em}
-                \pr@theotherauthor
-                \vspace{-2em}
-                \pr@theotherinstitude 
-        }
-    }{ 
-        \PackageWarning{physics_report}{Already~made~2~titles.}
     }
-    \flag_raise:n {title_count_flag}
+    
+    \par\noindent{
+        \songti\zihao{5}
+        \tl_use:N \l__author_type ：#2
+    }
 }
-% <--
 
 
 
@@ -588,6 +650,30 @@
     \bibliography{#2}
 }
 % <--
+
+% 致谢
+%% \acknowledgment{ <content> }
+\DeclareDocumentCommand \acknowledgment { m } {
+    \vspace{1em}
+    \songti\zihao{5} #1
+    \vspace{1em}
+}
+
+% 附录
+%% \appendix[ <新页面展示开关> ]  
+%% 以section的方式实现
+%% default: \appendix[newpage=false] 
+%% \appendix[newpage]  -> 新页面
+\define@boolkey+[pr]{appendix}{newpage}[true]{}{
+    \PackageWarning{physics_report}{Option of newpage in Appendix using default=false.}
+}
+\DeclareDocumentCommand \appendix { O{newpage=false} } {
+    \setkeys*[pr]{appendix}{#1}
+    \ifpr@appendix@newpage
+        \newpage
+    \fi
+    \section*{附录}
+}
 
 
 
