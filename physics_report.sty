@@ -107,7 +107,9 @@
 %   \acknowledgement{ <内容> }
 %
 % @ 附录
-%   \appendix[ <英文开关> ]
+%   \appendix[ <新页面开关> ]
+%%   显示效果为 附录A、附录B、附录C ...
+%%   每次使用附录二字后编号自动迭代
 % 
 %% -> bib参考文献 <- %%%%%%%%%%%%%%%%%%%%%%
 % 
@@ -660,19 +662,31 @@
 }
 
 % 附录
-%% \appendix[ <新页面展示开关> ]  
+%% \appendix[ <新页面展示开关> ]
 %% 以section的方式实现
 %% default: \appendix[newpage=false] 
 %% \appendix[newpage]  -> 新页面
+%% 每使用一次更新“附录”后的编号 (A、B、C ...)
 \define@boolkey+[pr]{appendix}{newpage}[true]{}{
     \PackageWarning{physics_report}{Option of newpage in Appendix using default=false.}
 }
+\flag_new:n {appendix_count_flag} % 0 (A) at this time
 \DeclareDocumentCommand \appendix { O{newpage=false} } {
     \setkeys*[pr]{appendix}{#1}
     \ifpr@appendix@newpage
         \newpage
     \fi
-    \section*{附录}
+
+    \flag_raise:n {appendix_count_flag}
+    \tl_set:Nn \tl__appendix_index {
+        \int_to_Alph:n { 
+            \flag_height:n {appendix_count_flag} 
+        }
+    }
+    
+    \section*{
+        附录\tl_use:N \tl__appendix_index
+    }
 }
 
 
