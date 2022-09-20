@@ -687,6 +687,21 @@
     \section*{
         附录\tl_use:N \tl__appendix_index
     }
+    
+    \setcounter{table}{0}
+    \setcounter{figure}{0}
+    \captionsetup[table]{
+        name=表\tl_use:N \tl__appendix_index\hspace{-.8ex}
+    }
+    \captionsetup[figure]{
+        name=图\tl_use:N \tl__appendix_index\hspace{-.8ex}
+    }
+    \captionsetup[figure][bi-second]{
+        name=Fig.\hspace{1ex}\tl_use:N \tl__appendix_index\hspace{-.8ex}
+    }    
+    \captionsetup[table][bi-second]{
+        name=Tab.\hspace{1ex}\tl_use:N \tl__appendix_index\hspace{-.8ex}
+    }    
 }
 
 

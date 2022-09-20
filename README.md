@@ -147,11 +147,11 @@
 
     `\appendix[ <新页面开关> ]`
 
-    - `<新页面开关>` 使用方法如下
-      `newpage` 在新一页放置参考文献 或 在当前位置开始文献
-           - 新一页  `newpage=true`  or ` newpage `；
-           - 当前位置 ` newpage=false `；
-           - 默认值 `false` 当前位置；
+    - `<新页面开关>` 
+       - 新一页  `newpage=true`  or ` newpage `；
+       - 当前位置 ` newpage=false `；
+       - 默认值 `false` 当前位置；
+
     - 显示效果为 `附录 A` `附录 B` `附录 C` ...
        - 每次使用此命令，附录二字后编号自动向后迭代（最多可到 Z ） 
 

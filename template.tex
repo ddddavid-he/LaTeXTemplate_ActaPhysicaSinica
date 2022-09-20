@@ -6,29 +6,33 @@
 \title[
     English Title\superscript{*}
 ]{
-    中文标题\superscript{*}（简短明确,基金资助有上标*）
+    中文标题\superscript{*}（简短明确，基金资助有上标*）
 }
 \author[
-    David He\superscript{1)\dagger} \and Jackman He\superscript{2)} \and Cooper Guo\superscript{3)} \and John He\superscript{4)} \and Orange Guo\superscript{4)}
+    David He\superscript{1)\dagger} \and Jackman He\superscript{2)} \and Cooper Guo\superscript{3)} \and John He\superscript{4)} \and Orange Guo\superscript{5)}
 ]{
-    大维\superscript{1)\dagger} \and 杰汉\superscript{2)} \and 橙子\superscript{3)} \and 君君\superscript{1)} \and 橘子\superscript{4)}
+    大维\superscript{1)\dagger} \and 杰汉\superscript{2)} \and 橙子\superscript{3)} \and 君君\superscript{4)} \and 橘子\superscript{5)}
 }
 \institude[
-    1) School of Physics, Dual-Duck Mountain University, Guangzhou China
+    1) Department of Micro/Nano Electronics Minhang Institute of Technology, Shanghai China
 
     2) School of Physics, Liberal Arts College of Zhongguan Village, Beijing China
 
-    3) School of Physics, Nanqi Technical School, Hefei China
+    3) Shanghai Institute for Advanced Studies, Nanqi Technical School, Hefei China
     
-    4) Institude of Zhonger, Chinese Academy of Science, Beijing China
+    4) School of Physics, Dual-Duck Mountain University, Guangzhou China
+
+    5) Institute of Physics, Chinese Academy of Magic, Beijing China
 ]{
-    1)双鸭山大学\ 物理学院，广州 
+    1)闵行理工学院 \ 微纳电子学系，上海
 
     2)中关村文理学院\ 物理学院，北京
 
-    3)南七技校\ 物理学院，合肥
+    3)南七技校\ 上海研究院，上海
 
-    4)中科院\ 中二所，北京
+    4)双鸭山大学\ 物理学院，广州 
+
+    5)中国魔法院\ 物理所，北京
 }
 
 
@@ -61,15 +65,20 @@
 
     \subsubsection{第（3）点}
 
-    一个没标题的图像占位符
-    \hpic
-
     \zhlipsum[3]
     一些文字 \highlight{高亮的一些文字} 还有另外一些文字
 
     再来一个有标题的图像占位符 图\ref{fig:标题}
     \hpic[标题]
-    我喜欢初冬的太阳，我喜欢仲夏的月亮。
+    
+    《物理学报》由中国物理学会和中国科学院物理研究所主办的综合性物理学中文学术期刊，为半月刊，被SCI-CD、SCI-E、Scopus、EI、CA、INSPEC、JICST、AJ、MR等国际核心检索系统收录。 《物理学报》创刊于1933年的《中国物理学报》，1953年更名为《物理学报》
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=.8\linewidth]{./figures/figure1.png}
+        \bicaption{一张图}{A Figure}
+    \end{figure}
+    
     \begin{table}[H]
     \centering
     \begin{tabu}{\linewidth}{
@@ -87,7 +96,7 @@
         \SetCell{bg=blue} blue \\
         \bottomrule
     \end{tabu}
-    \bicaption[tab:thetable]{标题}{caption}
+    \bicaption{标题}{caption}
     \end{table}
 
 
@@ -99,14 +108,83 @@
     \acknowledgment{感谢北京大学尤教授和清华大学陈教授的讨论。}
 
 
-    \appendix[newpage=false]
+    \appendix[newpage]
 
-    标题排列和编号方式为附录A，附录B，附录C。
+    \Blue{标题排列和编号方式为附录A，附录B，附录C。}
+
+    $\pi = $ 
+
+    3.14159 26535 89793 23846 26433
+    83279 50288 41971 69399 37510
+    58209 74944 59230 78164 06286
+    20899 86280 34825 34211 70679
+    82148 08651 32823 06647 09384
+    46095 50582 23172 53594 08128
+    48111 74502 84102 70193 85211
+    05559 64462 29489 54930 38196
+    44288 10975 66593 34461 28475
+    64823 37867 83165 27120 19091
+    45648 56692 34603 48610 45432
+    66482 13393 60726 02491 41273
+
+    \begin{table}[H]
+        \centering
+        \begin{tabu}{\linewidth}{
+            X[1,c] X[2,c] X[3,c] 
+        }
+            \toprule
+            A & B & C \\
+            \cline{2-3}
+            1 & \SetCell[c=2]{c,m} 2\&3 \\
+            \midrule
+            \romannumeral1 & \romannumeral2 & \romannumeral3 \\
+            piggy & eggy & honey \\
+            red & yellow & blue \\
+            \bottomrule
+        \end{tabu}
+        \caption{第零个表格}
+    \end{table}
 
 
     \appendix
 
-    每个附录里如果有表，则相应为表A1,A2，表B1,B2，表C1,C2。
+    \Blue{每个附录里如果有表，则相应为表A1,A2，表B1,B2，表C1,C2。}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabu}{\linewidth}{
+            X[1,c] X[2,c] X[3,c] 
+        }
+            \toprule
+            A & B & C \\
+            \cline{2-3}
+            1 & \SetCell[c=2]{c,m} 2\&3 \\
+            \midrule
+            \romannumeral1 & \romannumeral2 & \romannumeral3 \\
+            piggy & eggy & honey \\
+            red & yellow & blue \\
+            \bottomrule
+        \end{tabu}
+        \caption{第一个表格}
+    \end{table}
+
+    \begin{table}[H]
+        \centering
+        \begin{tabu}{\linewidth}{
+            X[1,c] X[2,c] X[3,c] 
+        }
+            \toprule
+            A & B & C \\
+            \cline{2-3}
+            1 & \SetCell[c=2]{c,m} 2\&3 \\
+            \midrule
+            \romannumeral1 & \romannumeral2 & \romannumeral3 \\
+            piggy & eggy & honey \\
+             red & yellow & blue \\
+            \bottomrule
+        \end{tabu}
+        \bicaption{双语也行}{Dual Language Title}
+    \end{table}
 
 
 \end{multicols}
