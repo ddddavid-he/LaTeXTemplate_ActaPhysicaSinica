@@ -115,7 +115,7 @@
 % 
 % @ 导入bib文件
 %   \bibreference[ <可选控制参数> ]{ <bib文件名> }
-%%  导入的bib文件自动按 GB-T 7714 格式排版 
+%%  导入的bib文件自动按自定义的 基本符合物理学报要求的格式排版
 %%  <可选控制参数> 包含
 %%      nocite 导入bib中所有文献 或 只导入前文使用过的文献
 %%          导入全部 " nocite=true " or " nocite " ； 
@@ -124,13 +124,7 @@
 %%      newpage 在新一页放置参考文献 或 在当前位置开始文献
 %%          新一页 " newpage=true " or " newpage "；
 %%          当前位置 " newpage=false "；
-%%          默认值 false 当前位置；
-%%      style 参考文献排序方式 [引用顺序, 作者名-年份]
-%%          引用顺序 " style=numerical "；
-%%              有数字序号，按照引用顺序和bib中顺序排序
-%%          作者名-年份 " style=author-year "；  
-%%              无序号，按照作者名字和年份联合排序
-%%          默认值 numerical 按引用顺序排序  
+%%          默认值 false 当前位置； 
 %  
 % 
 %% -> 导入的包 <- %%%%%%%%%%%%%%%%%%%%%%%%
@@ -169,7 +163,7 @@
 \RequirePackage{float, booktabs, wrapfig, siunitx}
 \RequirePackage{fancyhdr}
 
-\RequirePackage[sort&compress]{gbt7714}
+% \RequirePackage[sort&compress]{gbt7714}
 
 \RequirePackage{geometry}
 
@@ -606,25 +600,8 @@
 
 % 参考文献 -->
 %% \bibreference[key=value]{bibfile.bib}
-%%% style = [numerical, author-year] default=numerical
-\define@choicekey*+[pr]{reference}{style}[\val\pr@sty]{
-        numerical, author-year
-}{
-    \ifcase\pr@sty\relax
-        \tl_set:Nn \l__bibstyle_tl {
-            gbt7714-numerical
-        }
-    \or 
-        \tl_set:Nn \l__bibstyle_tl {
-            gbt7714-author-year
-        }
-    \fi
-}{
-    \PackageWarning{physics_report}{Option of style is not allowed. Set to default=numerical instead.}
-    \bibliographystyle{gbt7714-numerical}
-}
-%%% nocite = [true, false] default=true
-\define@boolkey+[pr]{reference}{nocite}[true]{}{
+%%% nocite = [true, false] default=false
+\define@boolkey+[pr]{reference}{nocite}[false]{}{
     \PackageWarning{physics_report}{Option of nocite using default=true.}
 }
 %%% does reference locate in a newpage or not
@@ -634,9 +611,8 @@
 }
 
 \DeclareDocumentCommand \bibreference { o m } {
-    \setkeys*[pr]{reference}{nocite=true}
+    \setkeys*[pr]{reference}{nocite=false}
     \setkeys*[pr]{reference}{newpage=false}
-    \setkeys*[pr]{reference}{style=numerical}
     \IfValueT{#1}{
         \setkeys*[pr]{reference}{#1}
     }
@@ -646,9 +622,8 @@
     \ifpr@reference@newpage
         \newpage
     \fi
-    \bibliographystyle{
-        \tl_use:N \l__bibstyle_tl
-    }
+
+    \bibliographystyle{acta_physica_sinica}
     \bibliography{#2}
 }
 % <--
