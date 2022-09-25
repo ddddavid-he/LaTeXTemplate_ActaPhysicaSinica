@@ -202,13 +202,11 @@
 
 
     
-    % \nocite{*}
-    % \bibliography{bibtest}
     \bibreference[
-        nocite, style=acta, newpage
+        nocite, % 如果需要展示所有（包括未引用）的条目，加上这个参数
+        newpage
     ]{bibfile}
-    % \bibliographystyle{acta_physica_sinia}
-    % \bibliography{bibfile}
+
     
 
 \end{document}
