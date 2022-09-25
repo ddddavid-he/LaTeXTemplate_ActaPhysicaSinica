@@ -169,7 +169,7 @@
 \RequirePackage{float, booktabs, wrapfig, siunitx}
 \RequirePackage{fancyhdr}
 
-\RequirePackage[sort&compress]{gbt7714}
+% \RequirePackage[sort&compress]{gbt7714}
 
 \RequirePackage{geometry}
 
@@ -606,22 +606,30 @@
 
 % 参考文献 -->
 %% \bibreference[key=value]{bibfile.bib}
-%%% style = [numerical, author-year] default=numerical
+%%% style = [acta, numerical, author-year] default=acta
 \define@choicekey*+[pr]{reference}{style}[\val\pr@sty]{
-        numerical, author-year
+        acta, numerical, author-year
 }{
     \ifcase\pr@sty\relax
+        \tl_set:Nn \l__bibstyle_tl {
+            acta_physica_sinica
+        }
+    \or
+        \RequirePackage[sort&compress]{gbt7714}
         \tl_set:Nn \l__bibstyle_tl {
             gbt7714-numerical
         }
     \or 
+        \RequirePackage[sort&compress]{gbt7714}
         \tl_set:Nn \l__bibstyle_tl {
             gbt7714-author-year
         }
     \fi
 }{
-    \PackageWarning{physics_report}{Option of style is not allowed. Set to default=numerical instead.}
-    \bibliographystyle{gbt7714-numerical}
+    \PackageWarning{physics_report}{
+        Option of style is not allowed. Set to default=acta instead.
+    }
+    \bibliographystyle{acta_physica_sinica}
 }
 %%% nocite = [true, false] default=true
 \define@boolkey+[pr]{reference}{nocite}[true]{}{
@@ -636,7 +644,7 @@
 \DeclareDocumentCommand \bibreference { o m } {
     \setkeys*[pr]{reference}{nocite=true}
     \setkeys*[pr]{reference}{newpage=false}
-    \setkeys*[pr]{reference}{style=numerical}
+    \setkeys*[pr]{reference}{style=acta}
     \IfValueT{#1}{
         \setkeys*[pr]{reference}{#1}
     }
@@ -646,6 +654,7 @@
     \ifpr@reference@newpage
         \newpage
     \fi
+    % // TODO: test this
     \bibliographystyle{
         \tl_use:N \l__bibstyle_tl
     }
